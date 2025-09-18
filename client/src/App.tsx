@@ -10,7 +10,7 @@ import Reservations from "@/pages/Reservations";
 import Profile from "@/pages/Profile";
 import BottomNavigation from "@/components/BottomNavigation";
 import Header from "@/components/Header";
-import ThemeToggle from "@/components/ThemeToggle";
+import AppSidebar from "@/components/AppSidebar";
 
 function Router() {
   return (
@@ -25,6 +25,7 @@ function Router() {
 
 function App() {
   const [activeTab, setActiveTab] = useState("home");
+  const [showSidebar, setShowSidebar] = useState(false);
   
   const getPageTitle = () => {
     switch (activeTab) {
@@ -34,8 +35,6 @@ function App() {
         return "My Reservations";
       case "profile":
         return "Profile";
-      case "settings":
-        return "Settings";
       default:
         return "EquiNode";
     }
@@ -54,9 +53,6 @@ function App() {
       case "profile":
         window.location.pathname = "/profile";
         break;
-      case "settings":
-        console.log("Settings tab - could open settings page");
-        break;
     }
   };
 
@@ -67,11 +63,17 @@ function App() {
           {/* Header */}
           <Header
             title={getPageTitle()}
+            onMenuPress={() => setShowSidebar(true)}
+          />
+          
+          {/* Sidebar */}
+          <AppSidebar
+            isOpen={showSidebar}
+            onClose={() => setShowSidebar(false)}
             notificationCount={2}
-            onMenuPress={() => console.log("Menu pressed")}
-            onNotificationPress={() => console.log("Notifications pressed")}
             onProfilePress={() => setActiveTab("profile")}
-            rightElement={<ThemeToggle />}
+            onNotificationPress={() => console.log("Notifications pressed")}
+            onSettingsPress={() => console.log("Settings pressed")}
           />
           
           {/* Main Content */}

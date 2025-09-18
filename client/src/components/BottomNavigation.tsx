@@ -1,4 +1,4 @@
-import { MapPin, Clock, User, Settings } from "lucide-react";
+import { MapPin, Clock, User } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface BottomNavigationProps {
@@ -10,7 +10,6 @@ const tabs = [
   { id: "home", label: "Home", icon: MapPin },
   { id: "reservations", label: "Reservations", icon: Clock },
   { id: "profile", label: "Profile", icon: User },
-  { id: "settings", label: "Settings", icon: Settings },
 ];
 
 export default function BottomNavigation({ activeTab, onTabChange }: BottomNavigationProps) {
