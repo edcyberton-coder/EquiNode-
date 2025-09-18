@@ -2,6 +2,7 @@ import { useState } from "react";
 import MapView from "@/components/MapView";
 import ParkingSpotCard from "@/components/ParkingSpotCard";
 import ReservationModal from "@/components/ReservationModal";
+import FilterSheet, { FilterOptions } from "@/components/FilterSheet";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 
@@ -21,6 +22,12 @@ export default function Home() {
   const [selectedSpot, setSelectedSpot] = useState<ParkingSpot | null>(null);
   const [showSpotDetails, setShowSpotDetails] = useState(false);
   const [showReservationModal, setShowReservationModal] = useState(false);
+  const [showFilterSheet, setShowFilterSheet] = useState(false);
+  const [filters, setFilters] = useState<FilterOptions>({
+    status: "all",
+    priceRange: [0, 1000],
+    distance: 10
+  });
   
   //todo: remove mock functionality
   const parkingSpots: ParkingSpot[] = [
@@ -104,6 +111,19 @@ export default function Home() {
     }
   };
 
+  const handleApplyFilters = (newFilters: FilterOptions) => {
+    setFilters(newFilters);
+    console.log("Applied filters:", newFilters);
+  };
+
+  const activeFilterCount = () => {
+    let count = 0;
+    if (filters.status !== "all") count++;
+    if (filters.priceRange[0] !== 0 || filters.priceRange[1] !== 1000) count++;
+    if (filters.distance !== 10) count++;
+    return count;
+  };
+
 
   return (
     <div className="relative h-full">
@@ -112,7 +132,9 @@ export default function Home() {
         onSpotClick={handleSpotClick}
         onSearch={(query) => console.log(`Search: ${query}`)}
         onLocationPress={() => console.log("Getting current location...")}
-        onFilterPress={() => console.log("Opening filters...")}
+        onFilterPress={() => setShowFilterSheet(true)}
+        filters={filters}
+        activeFilterCount={activeFilterCount()}
       />
       
       {/* Quick Reserve Button */}
@@ -164,6 +186,14 @@ export default function Home() {
           setShowReservationModal(false);
           setSelectedSpot(null);
         }}
+      />
+      
+      {/* Filter Sheet */}
+      <FilterSheet
+        isOpen={showFilterSheet}
+        onClose={() => setShowFilterSheet(false)}
+        currentFilters={filters}
+        onApplyFilters={handleApplyFilters}
       />
     </div>
   );

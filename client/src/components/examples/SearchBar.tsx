@@ -6,6 +6,8 @@ export default function SearchBarExample() {
       <SearchBar 
         onSearch={(query) => console.log(`Searching for: ${query}`)}
         onLocationPress={() => console.log("Location button pressed")}
+        onFilterPress={() => console.log("Filter button pressed")}
+        activeFilterCount={2}
       />
     </div>
   );

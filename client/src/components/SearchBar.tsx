@@ -1,18 +1,23 @@
-import { Search, MapPin } from "lucide-react";
+import { Search, MapPin, Filter } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { useState } from "react";
 
 interface SearchBarProps {
   placeholder?: string;
   onSearch?: (query: string) => void;
   onLocationPress?: () => void;
+  onFilterPress?: () => void;
+  activeFilterCount?: number;
 }
 
 export default function SearchBar({ 
   placeholder = "Search for parking spots...", 
   onSearch,
-  onLocationPress 
+  onLocationPress,
+  onFilterPress,
+  activeFilterCount = 0
 }: SearchBarProps) {
   const [query, setQuery] = useState("");
 
@@ -35,6 +40,23 @@ export default function SearchBar({
             data-testid="input-search"
           />
         </div>
+        
+        <Button 
+          type="button"
+          size="icon"
+          variant="secondary"
+          onClick={onFilterPress}
+          className="bg-card/95 backdrop-blur-sm shadow-lg relative"
+          data-testid="button-filter"
+        >
+          <Filter className="w-4 h-4" />
+          {activeFilterCount > 0 && (
+            <Badge className="absolute -top-2 -right-2 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs bg-gold text-gold-foreground">
+              {activeFilterCount}
+            </Badge>
+          )}
+        </Button>
+        
         <Button 
           type="button"
           size="icon"
